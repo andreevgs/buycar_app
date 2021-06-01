@@ -1,6 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
-
 import { makeStyles } from '@material-ui/core/styles';
 import {Switch, Route} from 'react-router-dom'
 

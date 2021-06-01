@@ -9,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import BlockIcon from '@material-ui/icons/Block';
 import {Link, withRouter} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +36,21 @@ const useStyles = makeStyles((theme) => ({
     cardContent: {
         flexGrow: 1,
     },
+    CardActions: {
+        padding: '16px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    },
+    CardButton: {
+        '&:not(:first-child)': {
+            marginLeft: '0',
+            marginTop: theme.spacing(1),
+        },
+    },
+    CardButtonIcon: {
+        marginRight: '6px',
+    }
 }));
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -85,18 +102,20 @@ function Auto() {
                         />
                         <CardContent className={classes.cardContent}>
                             <Typography gutterBottom variant="h5" component="h2">
-                                Heading
+                                Peugeot 406
                             </Typography>
                             <Typography>
                                 This is a media card. You can use this section to describe the content.
                             </Typography>
                         </CardContent>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                View
+                        <CardActions className={classes.CardActions}>
+                            <Button className={classes.CardButton} size="small" color="primary">
+                                <FavoriteBorderIcon className={classes.CardButtonIcon} fontSize="small"></FavoriteBorderIcon>
+                                В избранное
                             </Button>
-                            <Button size="small" color="primary">
-                                Edit
+                            <Button className={classes.CardButton} size="small" color="primary">
+                                <BlockIcon className={classes.CardButtonIcon} fontSize="small"></BlockIcon>
+                                Пожаловаться
                             </Button>
                         </CardActions>
                         </Card>
