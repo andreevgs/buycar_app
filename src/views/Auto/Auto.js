@@ -13,6 +13,8 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BlockIcon from '@material-ui/icons/Block';
 import {Link, withRouter} from 'react-router-dom';
 
+import SearchDialog from '../../components/SearchDialog/SearchDialog';
+
 const useStyles = makeStyles((theme) => ({
     heroContent: {
         backgroundColor: theme.palette.background.paper,
@@ -50,7 +52,21 @@ const useStyles = makeStyles((theme) => ({
     },
     CardButtonIcon: {
         marginRight: '6px',
-    }
+    },
+    CarInfoIcon: {
+        width: '20px',
+        height: '20px',
+        marginRight: theme.spacing(1),
+    },
+    CarMainInfo: {
+        marginBottom: theme.spacing(2),
+    },
+    CarInfoString: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: theme.spacing(1),
+    },
 }));
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -64,30 +80,7 @@ function Auto() {
             <main>
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
-                <Container maxWidth="sm">
-                    <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                        Album layout
-                    </Typography>
-                    <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                        Something short and leading about the collection below—its contents, the creator, etc.
-                        Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-                        entirely.
-                    </Typography>
-                    <div className={classes.heroButtons}>
-                    <Grid container spacing={2} justify="center">
-                        <Grid item>
-                        <Button variant="contained" color="primary">
-                            Main call to action
-                        </Button>
-                        </Grid>
-                        <Grid item>
-                        <Button variant="outlined" color="primary">
-                            Secondary action
-                        </Button>
-                        </Grid>
-                    </Grid>
-                    </div>
-                </Container>
+                <SearchDialog/>
                 </div>
                 <Container className={classes.cardGrid} maxWidth="md">
                 {/* End hero unit */}
@@ -104,8 +97,23 @@ function Auto() {
                             <Typography gutterBottom variant="h5" component="h2">
                                 Peugeot 406
                             </Typography>
-                            <Typography>
-                                This is a media card. You can use this section to describe the content.
+                            <Typography className={classes.CarMainInfo}>
+                                2002 год, передний привод, синий цвет
+                            </Typography>
+                            <Typography className={classes.CarInfoString} color="textSecondary">
+                                <img className={classes.CarInfoIcon} src="/icons/body.png"/><span>Хэтчбек</span>
+                            </Typography>
+                            <Typography className={classes.CarInfoString} color="textSecondary">
+                                <img className={classes.CarInfoIcon} src="/icons/engine.png"/><span>2.0 / Бензин</span>
+                            </Typography>
+                            <Typography className={classes.CarInfoString} color="textSecondary">
+                                <img className={classes.CarInfoIcon} src="/icons/gear.png"/><span>Механика</span>
+                            </Typography>
+                            <Typography className={classes.CarInfoString} color="textSecondary">
+                                <img className={classes.CarInfoIcon} src="/icons/mileage.png"/><span>210 000 км</span>
+                            </Typography>
+                            <Typography className={classes.CarInfoString} color="textSecondary">
+                                <img className={classes.CarInfoIcon} src="/icons/place.png"/><span>Минск</span>
                             </Typography>
                         </CardContent>
                         <CardActions className={classes.CardActions}>
