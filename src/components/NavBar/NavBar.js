@@ -24,7 +24,7 @@ function NavBar() {
     const classes = useStyles();
   
     return (
-        <AppBar position="static" color="default">
+        <AppBar position="fixed" color="default">
             <Toolbar>
                 <Link to="/" className={classes.title}>
                     <Typography variant="h6">BUYCAR</Typography>

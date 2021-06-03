@@ -27,7 +27,18 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   FormContainer: {
-      padding: theme.spacing(5, 2, 5, 2),
+      padding: theme.spacing(13, 2, 5, 2),
+  },
+  ControlBar: {
+      boxSizing: "border-box",
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      paddingBottom: theme.spacing(2),
+    //   paddingTop: theme.spacing(2),
+    //   backgroundColor: '#fff',
+      zIndex: 1100,
   }
 }));
 
@@ -55,10 +66,10 @@ function SearchDialog() {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open full-screen dialog
+        открыть парамемтры поиска
       </Button>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-        <AppBar className={classes.appBar}>
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />
@@ -194,15 +205,31 @@ function SearchDialog() {
                     />
                 </Grid>
             </Grid>
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-            >
-                Sign Up
-            </Button>
+            <Container maxWidth="md" className={classes.ControlBar}>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        >
+                            найти
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        className={classes.submit}
+                        >
+                            сбросить
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Container>
+            
             </form>
         </Container>
       </Dialog>
