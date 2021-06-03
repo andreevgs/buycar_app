@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# BUYCAR React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is test version of BUYCAR app created using react
+
+[buycar-app.herokuapp.com/cars](https://buycar-app.herokuapp.com/cars).
 
 ## Available Scripts
 
