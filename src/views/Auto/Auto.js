@@ -13,6 +13,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BlockIcon from '@material-ui/icons/Block';
 import {Link, withRouter} from 'react-router-dom';
 
+import Footer from '../../components/Footer/Footer';
 import SearchDialog from '../../components/SearchDialog/SearchDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -132,8 +133,9 @@ function Auto() {
                 </Grid>
                 </Container>
             </main>
+            <Footer />
         </React.Fragment>
     );
   }
   
-  export default withRouter(Auto);
+export default withRouter(Auto);

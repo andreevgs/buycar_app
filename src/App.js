@@ -3,9 +3,10 @@ import {Switch, Route} from 'react-router-dom'
 
 import Home from './views/Home/Home';
 import Auto from './views/Auto/Auto';
+import Login from './views/Login/Login';
+import Registration from './views/Registration/Registration';
 
 import NavBar from './components/NavBar/NavBar';
-import Footer from './components/Footer/Footer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,10 +21,11 @@ function App() {
     <div className="App" className={classes.root}>
       <NavBar />
       <Switch>
-        <Route path={'/cars'} component={Auto}/>
         <Route path={'/'} exact={true} component={Home}/>
+        <Route path={'/cars'} component={Auto}/>
+        <Route path={'/login'} component={Login}/>
+        <Route path={'/registration'} component={Registration}/>
       </Switch>
-      <Footer/>
     </div>
   );
 }
