@@ -9,16 +9,18 @@ import {
   
   import AuthService from "../services/auth.service";
   
-  export const register = (username, email, password) => (dispatch) => {
-    return AuthService.register(username, email, password).then(
-      (response) => {
+  export const register = (name, phone, email, password) => (dispatch) => {
+    console.log('reg data: ', [name, phone, email, password]);
+    return AuthService.register(name, phone, email, password).then(
+      (data) => {
+        console.log('res: ', data);
         dispatch({
             type: REGISTER_SUCCESS,
         });
   
         dispatch({
             type: SET_MESSAGE,
-            payload: response.data.message,
+            payload: data.message,
         });
 
         return Promise.resolve();
@@ -45,9 +47,8 @@ import {
     );
   };
   
-export const login = (username, password) => (dispatch) => {
-  // console.log(AuthService.login(username, password));
-    return AuthService.login(username, password).then(
+export const login = (email, password) => (dispatch) => {
+    return AuthService.login(email, password).then(
       (data) => {
         dispatch({
             type: LOGIN_SUCCESS,
@@ -57,6 +58,8 @@ export const login = (username, password) => (dispatch) => {
         return Promise.resolve();
       },
       (error) => {
+        console.log('err in log action: ', error);
+
         const message =
           (error.response &&
             error.response.data &&

@@ -1,10 +1,11 @@
-import React from 'react';
-import {Link as NavLink, withRouter} from 'react-router-dom';
+import React, { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link as NavLink, withRouter, Redirect } from 'react-router-dom';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -12,6 +13,15 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+import { login } from "../../actions/auth";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function Copyright() {
   return (
@@ -61,8 +71,56 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Login() {
+function Login(props) {
   const classes = useStyles();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [openMessage, setOpen] = useState(false);
+
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const { message } = useSelector(state => state.message);
+
+  const dispatch = useDispatch();
+
+  const handleCloseMessage = (e, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleChange = (e) => {
+    if(e.target.name === 'email'){
+      const email = e.target.value;
+      setEmail(email);
+    }
+    else if(e.target.name === 'password'){
+      const password = e.target.value;
+      setPassword(password);
+    }
+  }
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log('handled');
+    setLoading(true);
+
+    dispatch(login(email, password))
+      .then(() => {
+        props.history.push('/');
+      })
+      .catch((error) => {
+        setLoading(false);
+        setOpen(true);
+        console.log('error: ', error);
+      });
+  }
+
+  if (isLoggedIn) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -76,8 +134,13 @@ function Login() {
           <Typography component="h1" variant="h5">
             Вход
           </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
+          <ValidatorForm
+                noValidate
+                onSubmit={handleLogin}
+                onError={errors => console.log(errors)}
+                className={classes.form}
+          >
+            <TextValidator
               variant="outlined"
               margin="normal"
               required
@@ -86,9 +149,13 @@ function Login() {
               label="Адрес электронной почты"
               name="email"
               autoComplete="email"
+              value={email}
+              onChange={handleChange}
               autoFocus
+              validators={['required', 'isEmail']}
+              errorMessages={['Введите E-Mail', 'Некорректный адрес электронной почты']}
             />
-            <TextField
+            <TextValidator
               variant="outlined"
               margin="normal"
               required
@@ -98,6 +165,10 @@ function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={handleChange}
+              validators={['required']}
+              errorMessages={['Введите пароль']}
             />
             <Button
               type="submit"
@@ -105,8 +176,13 @@ function Login() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={loading}
             >
-              вход
+              {loading ? (
+                <CircularProgress size={24} color="inherit"/>
+                ) : (
+                  'войти'
+                )}
             </Button>
             <Grid container>
               <Grid item xs>
@@ -123,10 +199,16 @@ function Login() {
             <Box mt={5}>
               <Copyright />
             </Box>
-          </form>
+          </ValidatorForm>
         </div>
       </Grid>
+      <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+      <Alert onClose={handleCloseMessage} severity="error">
+        {message}
+      </Alert>
+      </Snackbar>
     </Grid>
+    
   );
 }
 
