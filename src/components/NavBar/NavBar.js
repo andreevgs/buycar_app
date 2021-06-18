@@ -124,6 +124,12 @@ const NavBar = () => {
             <Divider />
             {currentUser ? (
                 <List>
+                    <Link to="/add" color="primary" className={classes.sideBarButton}>
+                        <ListItem button>
+                            <ListItemIcon><InboxIcon /></ListItemIcon>
+                            <ListItemText primary="Add" />
+                        </ListItem>
+                    </Link>
                 {['Log out'].map((text, index) => (
                     <ListItem onClick={logOut} button key={text}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
@@ -158,7 +164,9 @@ const NavBar = () => {
                     <Typography variant="h6">BUYCAR</Typography>
                 </Link>
                 
-                <Link to="/cars" className={classes.menuButton}><Button color="inherit">авто</Button></Link>
+                {/* <Link to="/cars" className={classes.menuButton}><Button color="inherit">авто</Button></Link> */}
+                <Link to="/tutorials" className={classes.menuButton}><Button color="inherit">обзоры</Button></Link>
+
                 {currentUser ? (
                     <div>
                         <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>

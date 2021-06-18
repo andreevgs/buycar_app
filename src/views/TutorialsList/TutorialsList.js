@@ -5,7 +5,7 @@ import {
   findTutorialsByTitle,
   deleteAllTutorials,
 } from "../../actions/tutorials";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 const TutorialsList = () => {
   const [currentTutorial, setCurrentTutorial] = useState(null);
@@ -134,8 +134,9 @@ const TutorialsList = () => {
           </div>
         )}
       </div>
+      <Link to="/add">Add</Link>
     </div>
   );
 };
 
-export default TutorialsList;
+export default withRouter(TutorialsList);

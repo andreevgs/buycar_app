@@ -1,31 +1,36 @@
-import http from "../http-common";
+import axios from "axios";
+
+const API_URL = "http://localhost:5000/api";
 
 const getAll = () => {
-  return http.get("/tutorials");
+  return axios.get(API_URL + "/tutorials");
 };
 
 const get = id => {
-  return http.get(`/tutorials/${id}`);
+  return axios.get(API_URL + `/tutorials/${id}`);
 };
 
 const create = data => {
-  return http.post("/tutorials", data);
+  return axios.post(API_URL + "/tutorials", data).then((response) => {
+    console.log('create res: ', response);
+    return response.data;
+  });
 };
 
 const update = (id, data) => {
-  return http.put(`/tutorials/${id}`, data);
+  return axios.put(`/tutorials/${id}`, data);
 };
 
 const remove = id => {
-  return http.delete(`/tutorials/${id}`);
+  return axios.delete(`/tutorials/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/tutorials`);
+  return axios.delete(`/tutorials`);
 };
 
 const findByTitle = title => {
-  return http.get(`/tutorials?title=${title}`);
+  return axios.get(`/tutorials?title=${title}`);
 };
 
 const TutorialService = {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { updateTutorial, deleteTutorial } from "../../actions/tutorials";
 import TutorialDataService from "../../services/TutorialService";
 
@@ -153,4 +154,4 @@ const Tutorial = (props) => {
   );
 };
 
-export default Tutorial;
+export default withRouter(Tutorial);

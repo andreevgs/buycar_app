@@ -4,10 +4,36 @@ import {
     UPDATE_TUTORIAL,
     DELETE_TUTORIAL,
     DELETE_ALL_TUTORIALS,
+    SET_MESSAGE
   } from "./types";
   
   import TutorialDataService from "../services/TutorialService";
   
+  export const create = (title, description) => (dispatch) => {
+    return TutorialDataService.create({title, description}).then(
+      (data) => {
+        return Promise.resolve();
+      },
+      (error) => {
+        console.log('err in create action: ', error);
+
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+  
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+  
+        return Promise.reject();
+      }
+    );
+};
+
   export const createTutorial = (title, description) => async (dispatch) => {
     try {
       const res = await TutorialDataService.create({ title, description });

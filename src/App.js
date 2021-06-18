@@ -22,11 +22,11 @@ function App() {
 
   return (
     <div className="App" className={classes.root}>
-      {/* <NavBar /> */}
+      <NavBar />
       <Switch>
-        <Route path={'/tutorials'} component={TutorialsList} />
-        <Route path={'/add'} component={AddTutorial} />
-        <Route path={'/tutorials/:id'} component={Tutorial} />
+        <Route exact path={'/tutorials'} component={TutorialsList} />
+        <Route exact path={'/add'} component={AddTutorial} />
+        <Route exact path={'/tutorials/:id'} component={Tutorial} />
 
         <Route path={'/'} exact={true} component={Home}/>
         <Route path={'/cars'} component={Auto}/>
