@@ -179,6 +179,7 @@ const NavBar = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
+                            <MenuItem onClick={handleClose}><Link to="/cars/add">Подать объявление</Link></MenuItem>
                             <MenuItem onClick={handleClose}>Profile</MenuItem>
                             <MenuItem onClick={handleClose}>My account</MenuItem>
                             <MenuItem onClick={logOut}>Logout</MenuItem>

@@ -8,6 +8,7 @@ import Registration from './views/Registration/Registration';
 import TutorialsList from './views/TutorialsList/TutorialsList';
 import AddTutorial from './views/AddTutorial/AddTutorial';
 import Tutorial from './components/Tutorial/Tutorial';
+import CreateOffer from './views/CreateOffer/CreateOffer';
 
 import NavBar from './components/NavBar/NavBar';
 
@@ -29,7 +30,8 @@ function App() {
         <Route exact path={'/tutorials/:id'} component={Tutorial} />
 
         <Route path={'/'} exact={true} component={Home}/>
-        <Route path={'/cars'} component={Auto}/>
+        <Route exact path={'/cars'} component={Auto}/>
+        <Route exact path={'/cars/add'} component={CreateOffer}/>
         <Route path={'/login'} component={Login}/>
         <Route path={'/registration'} component={Registration}/>
       </Switch>
