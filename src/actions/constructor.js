@@ -32,3 +32,16 @@ export const setModels = (markId) => async (dispatch) => {
       console.log(err);
     }
 };
+
+export const setGenerations = (modelId) => async (dispatch) => {
+  try {
+    const res = await ConstructorDataService.getGenerations(modelId);
+
+    dispatch({
+      type: SET_GENERATIONS,
+      payload: res.data.generations,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

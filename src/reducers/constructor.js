@@ -13,10 +13,7 @@ export default function (state = initialState, action) {
         return {...state, models: payload};
 
     case SET_GENERATIONS:
-        return {
-            ...state,
-            generations: payload,
-        };
+        return {...state, generations: payload};
 
     case CLEAR_PARAMS:
         return {};

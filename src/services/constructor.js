@@ -10,9 +10,14 @@ const getModels = (markId) => {
   return axios.get(API_URL + "/cars/add?mark_id=" + markId);
 };
 
+const getGenerations = (modelId) => {
+  return axios.get(API_URL + "/cars/add?model_id=" + modelId);
+};
+
 const ConstructorService = {
   getAllParams,
-  getModels
+  getModels,
+  getGenerations
 };
 
 export default ConstructorService;

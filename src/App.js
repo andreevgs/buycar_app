@@ -9,6 +9,7 @@ import TutorialsList from './views/TutorialsList/TutorialsList';
 import AddTutorial from './views/AddTutorial/AddTutorial';
 import Tutorial from './components/Tutorial/Tutorial';
 import CreateOffer from './views/CreateOffer/CreateOffer';
+import Demo from './views/Demo/Demo';
 
 import NavBar from './components/NavBar/NavBar';
 
@@ -23,11 +24,12 @@ function App() {
 
   return (
     <div className="App" className={classes.root}>
-      <NavBar />
+      {/* <NavBar /> */}
       <Switch>
         <Route exact path={'/tutorials'} component={TutorialsList} />
         <Route exact path={'/add'} component={AddTutorial} />
         <Route exact path={'/tutorials/:id'} component={Tutorial} />
+        <Route exact path={'/demo'} component={Demo} />
 
         <Route path={'/'} exact={true} component={Home}/>
         <Route exact path={'/cars'} component={Auto}/>
