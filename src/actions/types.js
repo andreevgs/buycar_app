@@ -17,3 +17,4 @@ export const SET_PARAMS = "SET_PARAMS";
 export const SET_MODELS = "SET_MODELS";
 export const SET_GENERATIONS = "SET_GENERATIONS";
 export const CLEAR_PARAMS = "CLEAR_PARAMS";
+export const CREATE_OFFER_SUCCESS = "CREATE_OFFER_SUCCESS";

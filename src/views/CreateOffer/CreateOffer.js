@@ -13,6 +13,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { DropzoneArea } from 'material-ui-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { setParams, setModels, setGenerations } from "../../actions/constructor";
 
@@ -83,6 +84,19 @@ export default function CreateOffer(props) {
   const [checkedEngine, setCheckedEngine] = useState('');
   const [checkedCapacity, setCheckedCapacity] = useState('');
   const [checkedUnit, setCheckedUnit] = useState('');
+  const [checkedTransmission, setCheckedTransmission] = useState('');
+  const [checkedColor, setCheckedColor] = useState('');
+  const [checkedInterior, setCheckedInterior] = useState('');
+  const [checkedMaterial, setCheckedMaterial] = useState('');
+
+  const [checkedConditioning, setCheckedConditioning] = useState('');
+  const [checkedHeadlight, setCheckedHeadlight] = useState('');
+  const [checkedCruise, setCheckedCruise] = useState('');
+  const [checkedCamera, setCheckedCamera] = useState('');
+  const [checkedParking, setCheckedParking] = useState('');
+  const [checkedSuspension, setCheckedSuspension] = useState('');
+  const [checkedDisk, setCheckedDisk] = useState('');
+  const [checkedRoof, setCheckedRoof] = useState('');
 
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [loadingStatusModel, setLoadingStatusModel] = useState(true);
@@ -152,23 +166,37 @@ export default function CreateOffer(props) {
     }
   }
 
-  const handleOffer = () => {
-    console.log('years: ', constructor.years);
-    console.log('year: ', checkedYear);
+  const handleOffer = (e) => {
+    e.preventDefault();
+    alert(111);
   }
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <main className={classes.layout}>
+      <form className={classes.layout} autoComplete="off" onSubmit={handleOffer}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Checkout
+            Новое объявление
           </Typography>
           <React.Fragment>
               <React.Fragment>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                    <DropzoneArea
+                      filesLimit={20}
+                      acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                      dropzoneText={"Нажмите или перетащите сюда фотографии"}
+                      showPreviews={true}
+                      showPreviewsInDropzone={false}
+                      previewGridProps={{container: { spacing: 2, xs: 12}, item: { spacing: 2, xs: 12, sm: 6 }}}
+                      previewText="Прикреплённые файлы"
+                      maxFileSize={5000000}
+                    />
+                    </Grid>
+                  </Grid>
                   <Typography variant="h6" gutterBottom>
-                      Shipping address
+                    Основные параметры
                   </Typography>
                   <Grid container spacing={3}>
                       <Grid item xs={12}>
@@ -323,12 +351,12 @@ export default function CreateOffer(props) {
                       </Grid>
                       <Grid item xs={12}>
                       <FormControl variant="outlined" className={classes.formControl} fullWidth>
-                        <InputLabel id="engine-label">Объём двигателя *</InputLabel>
+                        <InputLabel id="capacity-label">Объём двигателя *</InputLabel>
                         <Select
                           disabled={loadingStatus}
-                          labelId="engine-label-error"
-                          id="engine"
-                          onChange={(_, value) => {setCheckedCapacity(value.props); console.log('engine: ', checkedCapacity)}}
+                          labelId="capacity-label-error"
+                          id="capacity"
+                          onChange={(_, value) => {setCheckedCapacity(value.props); console.log('capacity: ', checkedCapacity)}}
                           label="Объём двигателя *"
                           fullWidth
                           >
@@ -345,12 +373,12 @@ export default function CreateOffer(props) {
                       </Grid>
                       <Grid item xs={12}>
                       <FormControl variant="outlined" className={classes.formControl} fullWidth>
-                        <InputLabel id="engine-label">Тип привода *</InputLabel>
+                        <InputLabel id="unit-label">Тип привода *</InputLabel>
                         <Select
                           disabled={loadingStatus}
-                          labelId="engine-label-error"
-                          id="engine"
-                          onChange={(_, value) => {setCheckedUnit(value.props); console.log('engine: ', checkedUnit)}}
+                          labelId="unit-label-error"
+                          id="unit"
+                          onChange={(_, value) => {setCheckedUnit(value.props); console.log('unit: ', checkedUnit)}}
                           label="Тип привода *"
                           fullWidth
                           >
@@ -365,14 +393,308 @@ export default function CreateOffer(props) {
                         </Select>
                       </FormControl>
                       </Grid>
-                      
+                      <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        id="mileage"
+                        label="Пробег (км) *"
+                        variant="outlined"
+                      />
+                      </Grid>
+                      <Grid item xs={12}>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <InputLabel id="transmission-label">Коробка *</InputLabel>
+                        <Select
+                          disabled={loadingStatus}
+                          labelId="transmission-label-error"
+                          id="transmission"
+                          onChange={(_, value) => {setCheckedTransmission(value.props); console.log('transmission: ', checkedTransmission)}}
+                          label="Коробка *"
+                          fullWidth
+                          >
+                            <MenuItem value="">
+                                <em>Коробка</em>
+                            </MenuItem>
+                            {constructor.transmissions && (
+                              constructor.transmissions.map((transmission) => {
+                                return <MenuItem value={transmission.id}>{transmission.name_ru}</MenuItem>
+                              })
+                            )}
+                        </Select>
+                      </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <InputLabel id="color-label">Цвет *</InputLabel>
+                        <Select
+                          disabled={loadingStatus}
+                          labelId="color-label-error"
+                          id="color"
+                          onChange={(_, value) => {setCheckedColor(value.props); console.log('color: ', checkedColor)}}
+                          label="Цвет *"
+                          fullWidth
+                          >
+                            <MenuItem value="">
+                                <em>Цвет</em>
+                            </MenuItem>
+                            {constructor.colors && (
+                              constructor.colors.map((color) => {
+                                return <MenuItem value={color.id}>{color.name_ru}</MenuItem>
+                              })
+                            )}
+                        </Select>
+                      </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <InputLabel id="material-label">Материал отделки салона *</InputLabel>
+                        <Select
+                          disabled={loadingStatus}
+                          labelId="material-label-error"
+                          id="material"
+                          onChange={(_, value) => {setCheckedMaterial(value.props); console.log('material: ', checkedMaterial)}}
+                          label="Материал отделки салона *"
+                          fullWidth
+                          >
+                            <MenuItem value="">
+                                <em>Материал отделки салона</em>
+                            </MenuItem>
+                            {constructor.materials && (
+                              constructor.materials.map((material) => {
+                                return <MenuItem value={material.id}>{material.name_ru}</MenuItem>
+                              })
+                            )}
+                        </Select>
+                      </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <InputLabel id="interior-label">Цвет салона *</InputLabel>
+                        <Select
+                          disabled={loadingStatus}
+                          labelId="interior-label-error"
+                          id="interior"
+                          onChange={(_, value) => {setCheckedInterior(value.props); console.log('interior: ', checkedInterior)}}
+                          label="Цвет салона *"
+                          fullWidth
+                          >
+                            <MenuItem value="">
+                                <em>Цвет салона</em>
+                            </MenuItem>
+                            {constructor.interiors && (
+                              constructor.interiors.map((interior) => {
+                                return <MenuItem value={interior.id}>{interior.name_ru}</MenuItem>
+                              })
+                            )}
+                        </Select>
+                      </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        id="cost"
+                        label="Цена (USD) *"
+                        variant="outlined"
+                      />
+                      </Grid>
+                      <Grid item xs={12}>
+                      <TextField
+                        id="about"
+                        label="Расскажите про свой автомобиль"
+                        multiline
+                        rows={5}
+                        variant="outlined"
+                        fullWidth
+                      />
+                      </Grid>
+                      <Grid item xs={12}>
+                      <Typography variant="h6" gutterBottom>
+                        Дополнительные параметры
+                      </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="conditioning-label">Кондиционер</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="conditioning-label-error"
+                            id="conditioning"
+                            onChange={(_, value) => {setCheckedConditioning(value.props); console.log('interior: ', checkedConditioning)}}
+                            label="Кондиционер"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Кондиционер</em>
+                            </MenuItem>
+                            {constructor.conditioningTypes && (
+                              constructor.conditioningTypes.map((type) => {
+                                return <MenuItem value={type.id}>{type.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="headlight-label">Оптика и свет</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="headlight-label-error"
+                            id="headlight"
+                            onChange={(_, value) => {setCheckedHeadlight(value.props); console.log('interior: ', checkedHeadlight)}}
+                            label="Оптика и свет"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Оптика и свет</em>
+                            </MenuItem>
+                            {constructor.headlights && (
+                              constructor.headlights.map((headlight) => {
+                                return <MenuItem value={headlight.id}>{headlight.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="cruise-label">Круиз-контроль</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="cruise-label-error"
+                            id="cruise"
+                            onChange={(_, value) => {setCheckedCruise(value.props); console.log('interior: ', checkedCruise)}}
+                            label="Круиз-контроль"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Круиз-контроль</em>
+                            </MenuItem>
+                            {constructor.cruiseTypes && (
+                              constructor.cruiseTypes.map((type) => {
+                                return <MenuItem value={type.id}>{type.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="cameras-label">Камеры</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="cameras-label-error"
+                            id="cameras"
+                            onChange={(_, value) => {setCheckedCamera(value.props); console.log('interior: ', checkedCamera)}}
+                            label="Камеры"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Камеры</em>
+                            </MenuItem>
+                            {constructor.cruiseTypes && (
+                              constructor.cameras.map((camera) => {
+                                return <MenuItem value={camera.id}>{camera.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="parking-label">Датчики парковки</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="parking-label-error"
+                            id="parking"
+                            onChange={(_, value) => {setCheckedParking(value.props); console.log('interior: ', checkedParking)}}
+                            label="Датчики парковки"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Датчики парковки</em>
+                            </MenuItem>
+                            {constructor.parkingTypes && (
+                              constructor.parkingTypes.map((type) => {
+                                return <MenuItem value={type.id}>{type.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="suspension-label">Подвеска</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="suspension-label-error"
+                            id="suspension"
+                            onChange={(_, value) => {setCheckedSuspension(value.props); console.log('interior: ', checkedSuspension)}}
+                            label="Подвеска"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Подвеска</em>
+                            </MenuItem>
+                            {constructor.suspensions && (
+                              constructor.suspensions.map((suspension) => {
+                                return <MenuItem value={suspension.id}>{suspension.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="disk-label">Диски</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="disk-label-error"
+                            id="disk"
+                            onChange={(_, value) => {setCheckedDisk(value.props); console.log('interior: ', checkedDisk)}}
+                            label="Диски"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Диски</em>
+                            </MenuItem>
+                            {constructor.disks && (
+                              constructor.disks.map((disk) => {
+                                return <MenuItem value={disk.id}>{disk.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                          <InputLabel id="roof-label">Крыша</InputLabel>
+                          <Select
+                            disabled={loadingStatus}
+                            labelId="roof-label-error"
+                            id="roof"
+                            onChange={(_, value) => {setCheckedRoof(value.props); console.log('interior: ', checkedRoof)}}
+                            label="Крыша"
+                            fullWidth
+                            >
+                            <MenuItem value="">
+                                <em>Крыша</em>
+                            </MenuItem>
+                            {constructor.roofTypes && (
+                              constructor.roofTypes.map((roof) => {
+                                return <MenuItem value={roof.id}>{roof.name_ru}</MenuItem>
+                              })
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
                   </Grid>
                   <div className={classes.buttons}>
                     <Button
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                      onClick={handleOffer}
+                      type="submit"
                     >
                       Создать
                     </Button>
@@ -381,7 +703,7 @@ export default function CreateOffer(props) {
           </React.Fragment>
         </Paper>
         <Copyright />
-      </main>
+      </form>
     </React.Fragment>
   );
 }

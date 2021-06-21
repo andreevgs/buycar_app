@@ -45,3 +45,31 @@ export const setGenerations = (modelId) => async (dispatch) => {
     console.log(err);
   }
 };
+
+// export const create = (title, description) => (dispatch) => {
+//   return ConstructorDataService.createOffer({
+//     title,
+//     description
+//   }).then(
+//     (data) => {
+//       return Promise.resolve();
+//     },
+//     (error) => {
+//       console.log('err in create action: ', error);
+
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+
+//       dispatch({
+//         type: SET_MESSAGE,
+//         payload: message,
+//       });
+
+//       return Promise.reject();
+//     }
+//   );
+// };
