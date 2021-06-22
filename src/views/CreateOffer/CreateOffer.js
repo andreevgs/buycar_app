@@ -88,6 +88,10 @@ export default function CreateOffer(props) {
   const [checkedColor, setCheckedColor] = useState('');
   const [checkedInterior, setCheckedInterior] = useState('');
   const [checkedMaterial, setCheckedMaterial] = useState('');
+  const [mileage, setMileage] = useState('');
+  const [cost, setCost] = useState('');
+
+  const [validationError, setValidationError] = useState(false);
 
   const [checkedConditioning, setCheckedConditioning] = useState('');
   const [checkedHeadlight, setCheckedHeadlight] = useState('');
@@ -164,14 +168,44 @@ export default function CreateOffer(props) {
     }
   }
 
+  const validateAllFields = () => {
+    if(
+      checkedMark.name && 
+      checkedModel.name && 
+      checkedGeneration.generation && 
+      checkedYear.value &&
+      checkedBody.value &&
+      checkedState.value &&
+      checkedEngine.value &&
+      checkedCapacity.value &&
+      checkedUnit.value &&
+      checkedTransmission.value &&
+      checkedColor.value &&
+      checkedInterior.value &&
+      checkedMaterial.value &&
+      mileage &&
+      cost
+    ){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   const handleOffer = (e) => {
     e.preventDefault();
     console.log('images: ', constructorImages);
-    dispatch(createOffer(constructorImages, { checkedMark: checkedMark.id, checkedModel: checkedModel.id })).then(() => {
-      console.log('success');
-    }).catch((error) => {
-      console.log('error: ', error);
-    });
+    if(validateAllFields()){
+      dispatch(createOffer(constructorImages, { checkedMark: checkedMark.id, checkedModel: checkedModel.id })).then(() => {
+        console.log('success');
+      }).catch((error) => {
+        console.log('error: ', error);
+      });
+    }
+    else {
+      setValidationError(true);
+    }
   }
 
   return (
@@ -193,7 +227,7 @@ export default function CreateOffer(props) {
                       showPreviews={true}
                       showPreviewsInDropzone={false}
                       previewGridProps={{container: { spacing: 2, xs: 12}, item: { spacing: 2, xs: 12, sm: 6 }}}
-                      previewText="Прикреплённые файлы"
+                      previewText="Прикреплённые файлы:"
                       maxFileSize={5000000}
                       onChange={(files) => setConstructorImages(files)}
                     />
@@ -218,6 +252,8 @@ export default function CreateOffer(props) {
                               variant="outlined"
                               label="Марка *"
                               fullWidth
+                              error={!checkedMark.name && validationError}
+                              helperText={!checkedMark.name && validationError && "Укажите марку"}
                             />
                           );
                         }}
@@ -238,6 +274,8 @@ export default function CreateOffer(props) {
                               variant="outlined"
                               label="Модель *"
                               fullWidth
+                              error={!checkedModel.name && validationError}
+                              helperText={!checkedModel.name && validationError && "Укажите модель"}
                             />
                           );
                         }}
@@ -258,19 +296,21 @@ export default function CreateOffer(props) {
                               variant="outlined"
                               label="Поколение *"
                               fullWidth
+                              error={!checkedGeneration.generation && validationError}
+                              helperText={!checkedGeneration.generation && validationError && "Укажите поколение"}
                             />
                           );
                         }}
                       />
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedYear.value && validationError}>
                         <InputLabel id="year-label">Год выпуска *</InputLabel>
                         <Select
                           disabled={loadingStatus}
                           labelId="year-label-error"
                           id="year"
-                          onChange={(_, value) => setCheckedYear(value)}
+                          onChange={(_, value) => {setCheckedYear(value.props);console.log('year value: ', value.props);}}
                           label="Год выпуска *"
                           fullWidth
                           >
@@ -284,16 +324,17 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedYear.value && validationError && <FormHelperText>Укажите год выпуска</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedBody.value && validationError}>
                         <InputLabel id="body-label">Тип кузова *</InputLabel>
                         <Select
                           disabled={loadingStatus}
                           labelId="body-label-error"
                           id="body"
-                          onChange={(_, value) => setCheckedBody(value)}
+                          onChange={(_, value) => {setCheckedBody(value.props);console.log('body value: ', value.props);}}
                           label="Тип кузова *"
                           fullWidth
                           >
@@ -307,10 +348,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedBody.value && validationError && <FormHelperText>Укажите тип кузова</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedState.value && validationError}>
                         <InputLabel id="state-label">Состояние *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -329,10 +371,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedState.value && validationError && <FormHelperText>Укажите состояние</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedEngine.value && validationError}>
                         <InputLabel id="engine-label">Двигатель *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -351,10 +394,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedEngine.value && validationError && <FormHelperText>Укажите тип двигателя</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedCapacity.value && validationError}>
                         <InputLabel id="capacity-label">Объём двигателя *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -373,10 +417,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedCapacity.value && validationError && <FormHelperText>Укажите объём двигателя</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedUnit.value && validationError}>
                         <InputLabel id="unit-label">Тип привода *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -395,6 +440,7 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedUnit.value && validationError && <FormHelperText>Укажите тип привода</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
@@ -403,10 +449,13 @@ export default function CreateOffer(props) {
                         id="mileage"
                         label="Пробег (км) *"
                         variant="outlined"
+                        onChange={(e) => {setMileage(e.target.value)}}
+                        error={!mileage && validationError}
+                        helperText={!mileage && validationError && "Укажите пробег"}
                       />
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedTransmission.value && validationError}>
                         <InputLabel id="transmission-label">Коробка *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -425,10 +474,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedTransmission.value && validationError && <FormHelperText>Укажите тип коробки</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedColor.value && validationError}>
                         <InputLabel id="color-label">Цвет *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -447,10 +497,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedColor.value && validationError && <FormHelperText>Укажите цвет</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedMaterial.value && validationError}>
                         <InputLabel id="material-label">Материал отделки салона *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -469,10 +520,11 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedMaterial.value && validationError && <FormHelperText>Укажите материал</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedInterior.value && validationError}>
                         <InputLabel id="interior-label">Цвет салона *</InputLabel>
                         <Select
                           disabled={loadingStatus}
@@ -491,6 +543,7 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
+                        {!checkedInterior.value && validationError && <FormHelperText>Укажите цвет салона</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
@@ -499,6 +552,9 @@ export default function CreateOffer(props) {
                         id="cost"
                         label="Цена (USD) *"
                         variant="outlined"
+                        onChange={(e) => {setCost(e.target.value)}}
+                        error={!cost && validationError}
+                        helperText={!cost && validationError && "Укажите цену"}
                       />
                       </Grid>
                       <Grid item xs={12}>

@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="App" className={classes.root}>
-      {/* <NavBar /> */}
+      <NavBar />
       <Switch>
         <Route exact path={'/tutorials'} component={TutorialsList} />
         <Route exact path={'/add'} component={AddTutorial} />

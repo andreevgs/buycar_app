@@ -5,13 +5,13 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 export default function ComboBox(props) {
 
     return (
-    <Autocomplete
-        id="combo-box-demo"
-        options={top100Films}
-        getOptionLabel={(option) => option.title}
-        fullWidth
-        renderInput={(params) => <TextField {...params} label={props.label} variant="outlined" fullWidth />}
-    />
+      <Autocomplete
+          id="combo-box-demo"
+          options={top100Films}
+          getOptionLabel={(option) => option.title}
+          fullWidth
+          renderInput={(params) => <TextField {...params} label={props.label} variant="outlined" fullWidth />}
+      />
     );
 }
 

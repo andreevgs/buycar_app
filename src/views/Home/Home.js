@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     heroButtons: {
         marginTop: theme.spacing(4),
     },
+    link: {
+        textDecoration: 'none',
+    }
 }));
 
 function Home() {
@@ -39,14 +42,18 @@ function Home() {
                         <div className={classes.heroButtons}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item>
-                                <Button variant="contained" color="primary">
-                                    подать объявление
-                                </Button>
+                                <Link className={classes.link} to="/cars/add">
+                                    <Button variant="contained" color="primary">
+                                        подать объявление
+                                    </Button>
+                                </Link>
                                 </Grid>
                                 <Grid item>
-                                <Button variant="outlined" color="primary">
-                                    искать объявления
-                                </Button>
+                                <Link className={classes.link} to="/cars">
+                                    <Button variant="outlined" color="primary">
+                                        искать объявления
+                                    </Button>
+                                </Link>
                                 </Grid>
                             </Grid>
                         </div>

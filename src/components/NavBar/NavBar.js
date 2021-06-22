@@ -164,7 +164,7 @@ const NavBar = () => {
                     <Typography variant="h6">BUYCAR</Typography>
                 </Link>
                 
-                {/* <Link to="/cars" className={classes.menuButton}><Button color="inherit">авто</Button></Link> */}
+                <Link to="/cars" className={classes.menuButton}><Button color="inherit">авто</Button></Link>
                 <Link to="/tutorials" className={classes.menuButton}><Button color="inherit">обзоры</Button></Link>
 
                 {currentUser ? (
