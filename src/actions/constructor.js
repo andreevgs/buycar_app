@@ -3,6 +3,7 @@ import {
     SET_MODELS,
     SET_GENERATIONS,
     CLEAR_PARAMS,
+    SET_MESSAGE
 } from "./types";
   
 import ConstructorDataService from "../services/constructor";
@@ -46,30 +47,28 @@ export const setGenerations = (modelId) => async (dispatch) => {
   }
 };
 
-// export const create = (title, description) => (dispatch) => {
-//   return ConstructorDataService.createOffer({
-//     title,
-//     description
-//   }).then(
-//     (data) => {
-//       return Promise.resolve();
-//     },
-//     (error) => {
-//       console.log('err in create action: ', error);
+export const createOffer = (files, constructorData) => (dispatch) => {
+  return ConstructorDataService.upload(files, constructorData).then(
+    (data) => {
+      console.log('files sent succesfully');
+      return Promise.resolve();
+    },
+    (error) => {
+      console.log('err in create action: ', error);
 
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       dispatch({
-//         type: SET_MESSAGE,
-//         payload: message,
-//       });
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
 
-//       return Promise.reject();
-//     }
-//   );
-// };
+      return Promise.reject();
+    }
+  );
+};

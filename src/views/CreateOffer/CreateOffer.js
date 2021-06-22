@@ -15,7 +15,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
-import { setParams, setModels, setGenerations } from "../../actions/constructor";
+import { setParams, setModels, setGenerations, createOffer } from "../../actions/constructor";
 
 function Copyright() {
   return (
@@ -73,7 +73,7 @@ export default function CreateOffer(props) {
   const constructor = useSelector(state => state.constructor);
   const dispatch = useDispatch();
 
-  const [constructorData, setConstructorData] = useState('');
+  const [constructorImages, setConstructorImages] = useState('');
 
   const [checkedMark, setCheckedMark] = useState('');
   const [checkedModel, setCheckedModel] = useState('');
@@ -104,9 +104,7 @@ export default function CreateOffer(props) {
 
   useEffect(() => {
     dispatch(setParams()).then(() => {
-        setConstructorData(constructor);
         setLoadingStatus(false);
-        console.log('constructor: ', constructorData);
         console.log('constructor: ', constructor);
 
     });
@@ -168,7 +166,12 @@ export default function CreateOffer(props) {
 
   const handleOffer = (e) => {
     e.preventDefault();
-    alert(111);
+    console.log('images: ', constructorImages);
+    dispatch(createOffer(constructorImages, { checkedMark: checkedMark.id, checkedModel: checkedModel.id })).then(() => {
+      console.log('success');
+    }).catch((error) => {
+      console.log('error: ', error);
+    });
   }
 
   return (
@@ -192,6 +195,7 @@ export default function CreateOffer(props) {
                       previewGridProps={{container: { spacing: 2, xs: 12}, item: { spacing: 2, xs: 12, sm: 6 }}}
                       previewText="Прикреплённые файлы"
                       maxFileSize={5000000}
+                      onChange={(files) => setConstructorImages(files)}
                     />
                     </Grid>
                   </Grid>

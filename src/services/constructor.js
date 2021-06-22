@@ -14,10 +14,28 @@ const getGenerations = (modelId) => {
   return axios.get(API_URL + "/cars/add?model_id=" + modelId);
 };
 
+const upload = (files, constructorData) => {
+  let formData = new FormData();
+  files.map((file) => {
+    formData.append('files', file);
+  });
+  Object.keys(constructorData).forEach(function(key) {
+    console.log(this[key]);
+    formData.append(key, this[key]);
+  }, constructorData)
+  console.log('formdata: ', formData);
+  return axios.post(API_URL + "/cars/add", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    }
+  })
+}
+
 const ConstructorService = {
   getAllParams,
   getModels,
-  getGenerations
+  getGenerations,
+  upload
 };
 
 export default ConstructorService;
