@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -12,6 +12,8 @@ import Container from '@material-ui/core/Container';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BlockIcon from '@material-ui/icons/Block';
 import {Link, withRouter} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setOffers } from "../../actions/auto";
 
 import Footer from '../../components/Footer/Footer';
 import SearchDialog from '../../components/SearchDialog/SearchDialog';
@@ -74,6 +76,16 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function Auto() {
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+
+    const auto = useSelector(state => state.auto);
+
+    useEffect(() => {
+        dispatch(setOffers()).then(() => {
+            console.log('auto: ', auto);
+        });
+    }, []);
 
     return (
         <React.Fragment>

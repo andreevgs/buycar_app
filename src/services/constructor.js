@@ -1,3 +1,4 @@
+import authHeader from "./auth-header";
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api";
@@ -27,6 +28,7 @@ const upload = (files, constructorData) => {
   return axios.post(API_URL + "/cars/add", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
+      ...authHeader()
     }
   })
 }

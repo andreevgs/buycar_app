@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
@@ -13,9 +14,16 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import { DropzoneArea } from 'material-ui-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { setParams, setModels, setGenerations, createOffer } from "../../actions/constructor";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function Copyright() {
   return (
@@ -70,8 +78,14 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateOffer(props) {
   const classes = useStyles();
 
-  const constructor = useSelector(state => state.constructor);
   const dispatch = useDispatch();
+
+  const constructor = useSelector(state => state.constructor);
+  const { isLoggedIn } = useSelector(state => state.auth);
+  const { message } = useSelector(state => state.message);
+
+  const [loading, setLoading] = useState(false);
+  const [openMessage, setOpen] = useState(false);
 
   const [constructorImages, setConstructorImages] = useState('');
 
@@ -92,6 +106,8 @@ export default function CreateOffer(props) {
   const [cost, setCost] = useState('');
 
   const [validationError, setValidationError] = useState(false);
+  const [activeEngine, setActiveEngine] = useState(false);
+  const [controlledCapacityValue, setControlledCapacityValue] = useState('');
 
   const [checkedConditioning, setCheckedConditioning] = useState('');
   const [checkedHeadlight, setCheckedHeadlight] = useState('');
@@ -113,6 +129,13 @@ export default function CreateOffer(props) {
 
     });
   }, []);
+
+  const handleCloseMessage = (e, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  }
 
   const handleMark = (_, value) => {
     if(value){
@@ -177,7 +200,7 @@ export default function CreateOffer(props) {
       checkedBody.value &&
       checkedState.value &&
       checkedEngine.value &&
-      checkedCapacity.value &&
+      (checkedCapacity.value || activeEngine) &&
       checkedUnit.value &&
       checkedTransmission.value &&
       checkedColor.value &&
@@ -193,19 +216,46 @@ export default function CreateOffer(props) {
     }
   }
 
+  const createObjectFromState = () => {
+    return {
+      checkedMark: checkedMark.id,
+      checkedModel: checkedModel.id,
+      checkedGeneration: checkedGeneration.id,
+      checkedYear: checkedYear.value,
+      checkedBody: checkedBody.value,
+      checkedState: checkedState.value,
+      checkedEngine: checkedEngine.value,
+      checkedCapacity: checkedCapacity.value,
+      checkedUnit: checkedUnit.value,
+      checkedTransmission: checkedTransmission.value,
+      checkedColor: checkedColor.value,
+      checkedInterior: checkedInterior.value,
+      checkedMaterial: checkedMaterial.value,
+      mileage: mileage,
+      cost: cost,
+    }
+  }
+
   const handleOffer = (e) => {
     e.preventDefault();
-    console.log('images: ', constructorImages);
     if(validateAllFields()){
-      dispatch(createOffer(constructorImages, { checkedMark: checkedMark.id, checkedModel: checkedModel.id })).then(() => {
-        console.log('success');
+      setLoading(true);
+      dispatch(createOffer(constructorImages, createObjectFromState())).then(() => {
+        console.log('successss')
+        props.history.push('/cars');
       }).catch((error) => {
+        setLoading(false);
+        setOpen(true);
         console.log('error: ', error);
       });
     }
     else {
       setValidationError(true);
     }
+  }
+
+  if (!isLoggedIn) {
+    return <Redirect to="/login" />;
   }
 
   return (
@@ -310,7 +360,7 @@ export default function CreateOffer(props) {
                           disabled={loadingStatus}
                           labelId="year-label-error"
                           id="year"
-                          onChange={(_, value) => {setCheckedYear(value.props);console.log('year value: ', value.props);}}
+                          onChange={(_, value) => {setCheckedYear(value.props)}}
                           label="Год выпуска *"
                           fullWidth
                           >
@@ -381,7 +431,20 @@ export default function CreateOffer(props) {
                           disabled={loadingStatus}
                           labelId="engine-label-error"
                           id="engine"
-                          onChange={(_, value) => {setCheckedEngine(value.props); console.log('engine: ', checkedEngine)}}
+                          onChange={(_, value) => {
+                            if(value.props.value === 3){
+                              setCheckedCapacity('');
+                              setActiveEngine(true);
+                              setControlledCapacityValue('');
+                            }
+                            else {
+                              if(activeEngine){
+                                setActiveEngine(false);
+                              };
+                              console.log('engine value: ', value.props);
+                            }
+                            setCheckedEngine(value.props);
+                          }}
                           label="Двигатель *"
                           fullWidth
                           >
@@ -398,13 +461,18 @@ export default function CreateOffer(props) {
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
-                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedCapacity.value && validationError}>
+                      <FormControl variant="outlined" className={classes.formControl} fullWidth error={!checkedCapacity.value && !activeEngine && validationError}>
                         <InputLabel id="capacity-label">Объём двигателя *</InputLabel>
                         <Select
-                          disabled={loadingStatus}
+                          disabled={loadingStatus || activeEngine}
                           labelId="capacity-label-error"
                           id="capacity"
-                          onChange={(_, value) => {setCheckedCapacity(value.props); console.log('capacity: ', checkedCapacity)}}
+                          value={controlledCapacityValue}
+                          onChange={(event, value) => {
+                            setCheckedCapacity(value.props);
+                            setControlledCapacityValue(event.target.value);
+                            console.log('capacity: ', event.target.value);
+                          }}
                           label="Объём двигателя *"
                           fullWidth
                           >
@@ -417,7 +485,7 @@ export default function CreateOffer(props) {
                               })
                             )}
                         </Select>
-                        {!checkedCapacity.value && validationError && <FormHelperText>Укажите объём двигателя</FormHelperText>}
+                        {!checkedCapacity.value && !activeEngine && validationError && <FormHelperText>Укажите объём двигателя</FormHelperText>}
                       </FormControl>
                       </Grid>
                       <Grid item xs={12}>
@@ -755,8 +823,13 @@ export default function CreateOffer(props) {
                       color="primary"
                       className={classes.button}
                       type="submit"
+                      disabled={loading}
                     >
-                      Создать
+                      {loading ? (
+                        <CircularProgress size={24} color="inherit"/>
+                        ) : (
+                          'создать'
+                        )}
                     </Button>
                   </div>
               </React.Fragment>
@@ -764,6 +837,11 @@ export default function CreateOffer(props) {
         </Paper>
         <Copyright />
       </form>
+      <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+      <Alert onClose={handleCloseMessage} severity="error">
+        {message}
+      </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }
