@@ -164,8 +164,8 @@ const NavBar = () => {
                     <Typography variant="h6">BUYCAR</Typography>
                 </Link>
                 
-                <Link to="/cars" className={classes.menuButton}><Button color="inherit">авто</Button></Link>
-                <Link to="/tutorials" className={classes.menuButton}><Button color="inherit">обзоры</Button></Link>
+                <Link to="/cars" className={classes.menuButton}><Button color="inherit">авторынок</Button></Link>
+                <Link to="/news" className={classes.menuButton}><Button color="inherit">автоновости</Button></Link>
 
                 {currentUser ? (
                     <div>
@@ -180,6 +180,7 @@ const NavBar = () => {
                             onClose={handleClose}
                         >
                             <MenuItem onClick={handleClose}><Link to="/cars/add">Подать объявление</Link></MenuItem>
+                            <MenuItem onClick={handleClose}><Link to="/news/add">Добавить новость</Link></MenuItem>
                             <MenuItem onClick={handleClose}>Profile</MenuItem>
                             <MenuItem onClick={handleClose}>My account</MenuItem>
                             <MenuItem onClick={logOut}>Logout</MenuItem>

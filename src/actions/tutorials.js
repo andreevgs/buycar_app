@@ -1,6 +1,7 @@
 import {
     CREATE_TUTORIAL,
     RETRIEVE_TUTORIALS,
+    SET_ARTICLE,
     UPDATE_TUTORIAL,
     DELETE_TUTORIAL,
     DELETE_ALL_TUTORIALS,
@@ -9,8 +10,8 @@ import {
   
   import TutorialDataService from "../services/TutorialService";
   
-  export const create = (title, description) => (dispatch) => {
-    return TutorialDataService.create({title, description}).then(
+  export const create = (title, description, cover, content) => (dispatch) => {
+    return TutorialDataService.create({title, description, cover, content}).then(
       (data) => {
         return Promise.resolve();
       },
@@ -43,18 +44,21 @@ import {
       return Promise.reject(err);
     }
   };
-  
-  export const retrieveTutorials = () => async (dispatch) => {
-    try {
-      const res = await TutorialDataService.getAll();
-  
-      dispatch({
-        type: RETRIEVE_TUTORIALS,
-        payload: res.data,
-      });
-    } catch (err) {
-      console.log(err);
-    }
+
+  export const retrieveTutorials = () => (dispatch) => {
+      return TutorialDataService.getAll().then(
+        data => {
+          dispatch({
+            type: RETRIEVE_TUTORIALS,
+            payload: data.data,
+          });
+          console.log('dataaa: ', data.data);
+          return Promise.resolve(data.data);
+        },
+        error => {
+          return Promise.reject(error);
+        }
+      );
   };
   
   export const updateTutorial = (id, data) => async (dispatch) => {

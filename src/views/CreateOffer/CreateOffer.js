@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-import Autocomplete, { AutocompleteProps } from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -182,7 +182,7 @@ export default function CreateOffer(props) {
     }
   }
 
-  const handleGeneration= (_, value) => {
+  const handleGeneration = (_, value) => {
     if(value){
       setCheckedGeneration(value);
     }
@@ -241,7 +241,8 @@ export default function CreateOffer(props) {
     if(validateAllFields()){
       setLoading(true);
       dispatch(createOffer(constructorImages, createObjectFromState())).then(() => {
-        console.log('successss')
+        console.log('successss');
+        setLoading(false);
         props.history.push('/cars');
       }).catch((error) => {
         setLoading(false);

@@ -5,12 +5,16 @@ import './index.css';
 import store from "./store";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter} from 'react-router-dom'
+import { BrowserRouter, Route} from 'react-router-dom';
+import { LocationProvider } from 'react-location';
+import { QueryParamProvider } from 'use-query-params';
 
 ReactDOM.render(
       <BrowserRouter>
         <Provider store={store}>
-          <App />
+            <QueryParamProvider ReactRouterRoute={Route}>
+              <App />
+            </QueryParamProvider>
         </Provider>
       </BrowserRouter>,
   document.getElementById('root')

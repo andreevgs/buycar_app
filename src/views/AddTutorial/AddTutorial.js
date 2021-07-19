@@ -73,6 +73,9 @@ const AddTutorial = (props) => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [cover, setCover] = useState('');
+  const [description, setDescription] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [openMessage, setOpen] = useState(false);
   const [successful, setSuccessful] = useState(false);
@@ -94,6 +97,14 @@ const AddTutorial = (props) => {
       const title = e.target.value;
       setTitle(title);
     }
+    else if(e.target.name === 'description'){
+      const description = e.target.value;
+      setDescription(description);
+    }
+    else if(e.target.name === 'cover'){
+      const cover = e.target.value;
+      setCover(cover);
+    }
     else if(e.target.name === 'content'){
       const content = e.target.value;
       setContent(content);
@@ -102,12 +113,11 @@ const AddTutorial = (props) => {
 
   const handlePost = (e) => {
     e.preventDefault();
-    console.log('create data: ', [title, content]);
     setLoading(true);
     setSuccessful(false);
-    dispatch(create(title, content))
+    dispatch(create(title, description, cover, content))
       .then(() => {
-        props.history.push('/tutorials');
+        props.history.push('/news');
       })
       .catch((error) => {
         setLoading(false);
@@ -115,56 +125,6 @@ const AddTutorial = (props) => {
         console.log('error: ', error);
       });
   }
-
-  // if (!isLoggedIn) {
-  //   return <Redirect to="/login" />;
-  // }
-
-  // return (
-  //   <div className="submit-form">
-  //     {submitted ? (
-  //       <div>
-  //         <h4>You submitted successfully!</h4>
-  //         <button className="btn btn-success" onClick={newTutorial}>
-  //           Add
-  //         </button>
-  //       </div>
-  //     ) : (
-  //       <div>
-  //         <div className="form-group">
-  //           <label htmlFor="title">Title</label>
-  //           <input
-  //             type="text"
-  //             className="form-control"
-  //             id="title"
-  //             required
-  //             value={tutorial.title}
-  //             onChange={handleInputChange}
-  //             name="title"
-  //           />
-  //         </div>
-
-  //         <div className="form-group">
-  //           <label htmlFor="description">Description</label>
-  //           <input
-  //             type="text"
-  //             className="form-control"
-  //             id="description"
-  //             required
-  //             value={tutorial.description}
-  //             onChange={handleInputChange}
-  //             name="description"
-  //           />
-  //         </div>
-
-  //         <button onClick={saveTutorial} className="btn btn-success">
-  //           Submit
-  //         </button>
-  //       </div>
-  //     )}
-  //     <Link to="/tutorials">Tutorials</Link>
-  //   </div>
-  // );
 
   return (
     <Container component="main" maxWidth="xs">
@@ -198,6 +158,39 @@ const AddTutorial = (props) => {
               <TextValidator
                 variant="outlined"
                 required
+                multiLine
+                fullWidth
+                id="lastName"
+                label="Описание"
+                name="description"
+                autoComplete="lname"
+                value={description}
+                onChange={handleChange}
+                validators={['required']}
+                errorMessages={['Введите описание']}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextValidator
+                variant="outlined"
+                required
+                multiLine
+                fullWidth
+                id="lastName"
+                label="Обложка(URL)"
+                name="cover"
+                autoComplete="lname"
+                value={cover}
+                onChange={handleChange}
+                validators={['required']}
+                errorMessages={['укажите URL обложки']}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextValidator
+                variant="outlined"
+                required
+                multiline
                 fullWidth
                 id="lastName"
                 label="Содержимое"

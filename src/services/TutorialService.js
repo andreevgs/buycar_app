@@ -3,15 +3,15 @@ import axios from "axios";
 const API_URL = "http://localhost:5000/api";
 
 const getAll = () => {
-  return axios.get(API_URL + "/tutorials");
+  return axios.get(API_URL + "/news");
 };
 
-const get = id => {
-  return axios.get(API_URL + `/tutorials/${id}`);
+const getArticle = id => {
+  return axios.get(API_URL + `/news/${id}`);
 };
 
 const create = data => {
-  return axios.post(API_URL + "/tutorials", data).then((response) => {
+  return axios.post(API_URL + "/news", data).then((response) => {
     console.log('create res: ', response);
     return response.data;
   });
@@ -35,7 +35,7 @@ const findByTitle = title => {
 
 const TutorialService = {
   getAll,
-  get,
+  getArticle,
   create,
   update,
   remove,
